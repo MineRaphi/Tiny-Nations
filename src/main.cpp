@@ -76,11 +76,11 @@ int calculateDeaths(int population, float happiness) {
     uniform_real_distribution<float> dist(0.7f, 1.5f);
     float variance = dist(rng);
 
-    return population * average_death * variance * (1 - happiness * happiness_mult);
+    return population * average_death * variance * (2 - happiness * happiness_mult);
 }
 
 int calculateBirths(int population, float happiness) {
-    float average_birth = 0.07;
+    float average_birth = 0.13;
     float happiness_mult = 0.2;
 
     uniform_real_distribution<float> dist(0.7f, 1.4f);
