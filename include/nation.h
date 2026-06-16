@@ -2,6 +2,9 @@
 
 class Nation {
 private:
+   
+
+public:
     std::string m_name;
     std::string m_leader;
     int m_population;
@@ -10,6 +13,5 @@ private:
     float m_politicalDirection;
     bool m_isWartime;
 
-public:
     Nation(std::string name);
 };
