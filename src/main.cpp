@@ -10,6 +10,7 @@ void printState(Nation* nations, int count, int year);
 void progressYear(Nation* nations, int count, int* year);
 int calculateDeaths(int population, float happiness);
 int calculateBirths(int population, float happiness);
+float calculateHappiness(int population, float current_happiness, int money, bool isWar);
 
 int main(void) {
     int nation_count = 3;
@@ -66,6 +67,8 @@ void progressYear(Nation* nations, int count, int* year) {
 
         nations[i].m_population -= deaths;
         nations[i].m_population += births;
+
+        nations[i].m_happiness = calculateHappiness(nations[i].m_population, nations[i].m_happiness, nations[i].m_stateMoney, nations[i].m_isWartime);
     }
 }
 
@@ -87,4 +90,27 @@ int calculateBirths(int population, float happiness) {
     float variance = dist(rng);
 
     return population * average_birth * variance * (1 + happiness * happiness_mult);
+}
+
+float calculateHappiness(int population, float current_happiness, int money, bool isWar) {
+    float war_mult = 0.15;
+    float money_mult = 0.1;
+
+    float money_per_person = 200.0;
+
+    uniform_real_distribution<float> dist(0.95f, 1.05f);
+    float variance = dist(rng);
+
+    float happiness_change = population * money_per_person / (money * 1000);
+
+    float new_happiness = current_happiness * ((1 - happiness_change ) * money_mult + 1) * (1 - float(isWar * war_mult));
+
+    if (new_happiness > 1) {
+        new_happiness = 1;
+    }
+    else if (new_happiness < 0.009) {
+        new_happiness = 0.009;
+    }
+
+    return new_happiness;
 }
